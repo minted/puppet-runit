@@ -1,6 +1,6 @@
 define runit::service (
-  $user    = root,       # the service's user name
-  $group   = root,       # the service's group name
+  $user    = nobody,     # the service's user name
+  $group   = nogroup,    # the service's group name
   $enable  = true,       # shall the service be linked to /etc/service
   $ensure  = present,    # shall the service be present in /etc/sv
   # start command - either one of these three must be declared - it defines the content of the run script /etc/sv/$name/run
