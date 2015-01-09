@@ -41,10 +41,10 @@ define runit::service (
     }
   } else {
     file {
-      "${svbase}":          ensure => present;
-      "${svbase}/env":      ensure => present;
-      "${svbase}/log":      ensure => present;
-      "${svbase}/log/main": ensure => present;
+      "${svbase}":          ensure => directory;
+      "${svbase}/env":      ensure => directory;
+      "${svbase}/log":      ensure => directory;
+      "${svbase}/log/main": ensure => directory;
     }
   }
 
@@ -57,16 +57,19 @@ define runit::service (
         undef   => template('runit/run.erb'),
         default => $content,
       },
+      require => [Directory[$svbase]],
       ;
 
     "${svbase}/finish":
       ensure  => $ensure,
       content => template('runit/finish.erb'),
+      require => [Directory[$svbase]],
       ;
 
     "${svbase}/log/run":
       ensure  => $ensure,
       content => template('runit/logger_run.erb'),
+      require => [Directory["${svbase}/log"]],
       ;
   }
 
