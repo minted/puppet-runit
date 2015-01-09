@@ -2,12 +2,12 @@
 exec 2>&1
 set -e
 
-cd "<%= rundir %>"
-echo "Starting <%= name %> in `/bin/pwd` ..."
+cd "<%= @rundir %>"
+echo "Starting <%= @name %> in `/bin/pwd` ..."
 
-<% if source_file -%>
-. <%= source_file %>
+<% if @source_file -%>
+. <%= @source_file %>
 <% end -%>
 
 set -x
-exec chpst -e env -u <%= user %>:<%= group %> <%= command %>
+exec chpst -e env -u <%= @user %>:<%= @group %> <%= @command %>
