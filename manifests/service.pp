@@ -57,19 +57,19 @@ define runit::service (
         undef   => template('runit/run.erb'),
         default => $content,
       },
-      require => [Directory[$svbase]],
+      require => [File[$svbase]],
       ;
 
     "${svbase}/finish":
       ensure  => $ensure,
       content => template('runit/finish.erb'),
-      require => [Directory[$svbase]],
+      require => [File[$svbase]],
       ;
 
     "${svbase}/log/run":
       ensure  => $ensure,
       content => template('runit/logger_run.erb'),
-      require => [Directory["${svbase}/log"]],
+      require => [File["${svbase}/log"]],
       ;
   }
 
