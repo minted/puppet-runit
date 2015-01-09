@@ -2,6 +2,7 @@
 exec 2>&1
 set -e
 
+envdir="`/bin/pwd`/env"
 cd "<%= @rundir %>"
 echo "Starting <%= @name %> in `/bin/pwd` ..."
 
@@ -10,4 +11,4 @@ echo "Starting <%= @name %> in `/bin/pwd` ..."
 <% end -%>
 
 set -x
-exec chpst -e env -u <%= @user %>:<%= @group %> <%= @command %>
+exec chpst -e "$envdir" -u <%= @user %>:<%= @group %> -- <%= @command %>
