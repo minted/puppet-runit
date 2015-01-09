@@ -47,7 +47,12 @@ define runit::service (
       "${svbase}":          ensure => directory;
       "${svbase}/env":      ensure => directory;
       "${svbase}/log":      ensure => directory;
-      "${svbase}/log/main": ensure => directory;
+      "${svbase}/log/main":
+        ensure => directory,
+        owner  => 'svlogd',
+        group  => 'svlogd',
+        mode   => '0755',
+        ;
 
       "${svbase}/run":
         ensure  => present,
