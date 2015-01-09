@@ -1,5 +1,3 @@
 #!/bin/sh
-logdir="<%= _logdir %>"
-mkdir -p "${logdir}"
-chown <%= user %>:<%= group %> "${logdir}"
-exec chpst -u <%= user %>:<%= group %> svlogd -tt "${logdir}"
+mkdir -p main
+exec chpst -u svlogd svlogd -tt ./main
