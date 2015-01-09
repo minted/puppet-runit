@@ -17,7 +17,7 @@ define runit::service (
   $rundir  = undef,
 
   # Extra configuration:
-  $source_file = undef,   # shall we source an environment?
+  $inject = undef,        # shall we source an environment?
   $timeout = 7,           # service restart/stop timeouts (only relevant for 'enabled' services)
 ) {
 

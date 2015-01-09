@@ -6,8 +6,8 @@ envdir="`/bin/pwd`/env"
 cd "<%= @rundir %>"
 echo "Starting <%= @name %> in `/bin/pwd` ..."
 
-<% if @source_file -%>
-. <%= @source_file %>
+<% if @inject -%>
+. <%= @inject %>
 <% end -%>
 
 set -x
