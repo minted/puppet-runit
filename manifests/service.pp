@@ -1,3 +1,5 @@
+# vim: ft=conf sw=2 expandtab
+
 define runit::service (
   $user    = nobody,     # the service's user name
   $group   = nogroup,    # the service's group name
@@ -31,7 +33,6 @@ define runit::service (
 
   $svbase = "/etc/sv/${name}"
 
-  # Directories:
   if $ensure == "absent" {
     file { "${svbase}":
       ensure  => absent,
@@ -40,37 +41,36 @@ define runit::service (
       force   => true,
     }
   } else {
+    include 'runit::setup'
+
     file {
       "${svbase}":          ensure => directory;
       "${svbase}/env":      ensure => directory;
       "${svbase}/log":      ensure => directory;
       "${svbase}/log/main": ensure => directory;
+
+      "${svbase}/run":
+        ensure  => present,
+        source  => $source,
+        content => $content ? {
+          undef   => template('runit/run.erb'),
+          default => $content,
+        },
+        require => [File[$svbase]],
+        ;
+
+      "${svbase}/finish":
+        ensure  => present,
+        content => template('runit/finish.erb'),
+        require => [File[$svbase]],
+        ;
+
+      "${svbase}/log/run":
+        ensure  => present,
+        content => template('runit/logger_run.erb'),
+        require => [File["${svbase}/log"]],
+        ;
     }
-  }
-
-  # Scripts:
-  file {
-    "${svbase}/run":
-      ensure  => $ensure,
-      source  => $source,
-      content => $content ? {
-        undef   => template('runit/run.erb'),
-        default => $content,
-      },
-      require => [File[$svbase]],
-      ;
-
-    "${svbase}/finish":
-      ensure  => $ensure,
-      content => template('runit/finish.erb'),
-      require => [File[$svbase]],
-      ;
-
-    "${svbase}/log/run":
-      ensure  => $ensure,
-      content => template('runit/logger_run.erb'),
-      require => [File["${svbase}/log"]],
-      ;
   }
 
   # eventually enabling/disabling the service
