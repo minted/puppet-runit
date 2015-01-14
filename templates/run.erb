@@ -4,7 +4,7 @@ set -e
 
 envdir="`/bin/pwd`/env"
 cd "<%= @rundir %>"
-echo "Starting <%= @name %> in `/bin/pwd` ..."
+echo "*** Starting <%= @name %> in `/bin/pwd` ..."
 
 <% if @inject -%>
 . <%= @inject %>
