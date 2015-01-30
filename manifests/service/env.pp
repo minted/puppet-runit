@@ -25,8 +25,9 @@ define runit::service::env( $service, $envname = $title, $value, $ensure = prese
   $envdir = "/etc/sv/${service}/env"
 
   file { "${envdir}/${envname}":
-    ensure => $ensure,
+    ensure  => $ensure,
     content => "${value}\n",
+    before  => [Runit::Service::Enabled[$service]],
   }
 
 }
