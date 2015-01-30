@@ -1,12 +1,14 @@
-#!/bin/bash
-
-envdir="<%= svbase %>/env"
-root=<%= rundir %>
-echo "Starting <%= name %> from ${root}"
-cd $root
-mkdir -p "${envdir}"
-<% if command_use_rvm -%>
-source /etc/profile.d/rvm.sh
-<% end -%>
+#!/bin/sh
 exec 2>&1
-exec chpst -e "${envdir}" -u <%= user %>:<%= group %> <%= command %>
+set -e
+
+envdir="`/bin/pwd`/env"
+cd "<%= @rundir %>"
+echo "*** Starting <%= @name %> in `/bin/pwd` ..."
+
+<% if @inject -%>
+. <%= @inject %>
+<% end -%>
+
+set -x
+exec chpst -e "$envdir" -u <%= @user %>:<%= @group %> -- <%= @command %>
