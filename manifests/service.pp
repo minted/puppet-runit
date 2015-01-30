@@ -45,7 +45,12 @@ define runit::service (
 
     file {
       "${svbase}":          ensure => directory;
-      "${svbase}/env":      ensure => directory;
+      "${svbase}/env":
+        ensure => directory,
+        recurse => true,
+        purge   => true,  # remove unmanaged env entries
+        ;
+
       "${svbase}/log":      ensure => directory;
       "${svbase}/log/main":
         ensure => directory,
